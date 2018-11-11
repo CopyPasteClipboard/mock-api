@@ -42,7 +42,7 @@ const setupServer = async () => {
   // Import our routes
   require("./api")(app);
 
-  app.users = require('./models/user').users;
+  app.users = require('./models/user').Users;
 
 
   // Run the server itself

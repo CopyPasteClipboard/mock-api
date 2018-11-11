@@ -15,24 +15,23 @@ const encryptPassword = (salt, password) =>
     .update(password)
     .digest("hex");
 
+let validateUser = (user, password) => {
+  return encryptPassword(user.salt,password) === user.hash;
+};
 
-let users = [
-  {
-    username : 'homebrewster',
-    password : 'skollerlol',
-    first_name : 'bruce',
-    last_name : 'brookshire',
-    clipboard: []
-  },
-  {
-    username : 'bailersp',
-    password : 'coffee',
-    first_name : 'bailey',
-    last_name : 'pearson',
-    clipboard: []
-  }
-];
+let save = user => {
+  user.salt = makeSalt();
+  user.hash = encryptPassword(user.salt,user.password);
+  delete user['password'];
+
+  users.append(user);
+};
+
+let users = [];
+
+users.save = save;
+users.validateUser = validateUser;
 
 module.exports = {
-  users : users
+  Users : users
 };
