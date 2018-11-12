@@ -6,6 +6,14 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 /***************** User Model *******************/
+/**
+ *      id              SERIAL PRIMARY KEY,
+ *      username        VARCHAR (320) UNIQUE NOT NULL,
+ *      password_hash   VARCHAR(53) NOT NULL,
+ *      salt            VARCHAR(53) NOT NULL,
+ *      phone_number    CHAR(10) UNIQUE NOT NULL,
+ *      created_on      DATE NOT NULL,
+ */
 
 const makeSalt = () => Math.round(new Date().valueOf() * Math.random()) + "";
 
