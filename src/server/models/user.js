@@ -54,7 +54,7 @@ users.getLastUser = getLastUser;
 users.primary_key = primary_key;
 
 
-users.save( { username : "bananaland", password : "coffeeYummy", phone_number : "1234567890" });
+users.save( { username : "bananaland", password : "coffeeyummy", phone_number : "5037087892" });
 
 module.exports = {
   Users : users

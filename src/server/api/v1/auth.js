@@ -25,11 +25,8 @@ module.exports = app => {
 
       app.Users.save(newUser);
 
-      let token = jwt.sign( { id : newUser.id }, app.conf.superdupersecrets, {
-        expiresIn : 60 * 60 * 24
-      });
 
-      res.status(201).send( { auth : true , token : token });
+      res.status(200).send( { username : newUser.username });
     }
   });
 

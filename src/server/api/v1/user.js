@@ -7,18 +7,35 @@ module.exports = app => {
   });
 
   app.get('/v1/user/:username',(req,res) => {
-    let user = _.findWhere( app.Users.getUsers(), { username : req.params.username });
+    if (/\d*/.test(req.params.username)) {
+      let userid = req.params.username;
+      let data = _.findWhere( app.Users.getUsers(), { id : Number(userid) });
+      if (!data){
+        res.status(404).send( { error : `${userid} not found`});
+      } else {
+        let payload = {
+          username: data.username,
+          phone_number: data.phone_number,
+          created_on : data.created_on
+        };
+        res.status(200).send(payload);
+      }
+    } else {
+      let user = _.findWhere( app.Users.getUsers(), { username : req.params.username });
 
-    if (!user)
-      return res.status(404).send( { error : "user not found" });
+      if (!user)
+        return res.status(404).send( { error : "user not found" });
 
-    res.status(200).send( { username : user.username, id : user.user_id });
+      res.status(200).send( { username : user.username, id : user.user_id });
+    }
   });
 
   // Gets the user’s profile information
   app.get('/v1/user/:userid', (req,res) => {
     let userid = req.params.userid;
 
+    console.log('here we are?');
+    console.log(userid);
     let data = _.findWhere( app.Users.getUsers(), { id : Number(userid) });
     if (!data){
       res.status(404).send( { error : `${userid} not found`});
