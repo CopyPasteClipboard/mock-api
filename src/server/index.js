@@ -7,7 +7,8 @@ let path = require("path"),
   logger = require("morgan"),
   session = require("express-session"),
   mongoose = require("mongoose"),
-  envConfig = require("simple-env-config");
+  envConfig = require("simple-env-config"),
+	cors = require('cors');
 
 const env = process.env.NODE_ENV ? process.env.NODE_ENV : "dev";
 
@@ -22,7 +23,6 @@ const setupServer = async () => {
   let app = express();
   if (env !== "test") app.use(logger("dev"));
 
-  app.use(logger("dev"));
   // Setup pipeline session support
   app.store = session({
     name: "session",
@@ -35,6 +35,7 @@ const setupServer = async () => {
   });
 
   app.use(app.store);
+	app.use(cors());
   // Finish with the body parser
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
@@ -47,7 +48,6 @@ const setupServer = async () => {
   app.Items = require('./models/boarditem').BoardItems;
 
 
-  console.log(app.Items);
   app.conf = conf;
 
   // Run the server itself

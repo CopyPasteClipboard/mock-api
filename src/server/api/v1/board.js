@@ -38,6 +38,8 @@ module.exports = app => {
 
   // Adds an item to the clipboard
   app.post('/v1/clipboard/:boardid/boarditem',(req,res) => {
+
+	  console.log(req.body);
     if (!req.body.new_item)
       return res.status(422).send( { error : "could not create new board item"});
 
