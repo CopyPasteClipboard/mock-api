@@ -42,8 +42,13 @@ const setupServer = async () => {
   // Import our routes
   require("./api")(app);
 
-  app.users = require('./models/user').Users;
+  app.Users = require('./models/user').Users;
+  app.Boards = require('./models/board').Boards;
+  app.Items = require('./models/boarditem').BoardItems;
 
+
+  console.log(app.Items);
+  app.conf = conf;
 
   // Run the server itself
   let server;

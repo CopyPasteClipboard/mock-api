@@ -1,3 +1,5 @@
+let _ = require('underscore');
+
 module.exports = app => {
 
   // Creates a new clipboard for the user
@@ -13,7 +15,15 @@ module.exports = app => {
   // Gets all items currently in the clipboard
   // ?type=mostRecent || type=all
   app.get('/v1/clipboard/:boardId',(req,res) => {
-    res.status(500).send('not implemented');
+    let items = _.where(app.Items, { board_id : req.params.boardId });
+
+    if (!items) {
+      return res.status(404).send( { error : "clipboard not found" });
+    }
+
+    let item = _.max(items, item => Number(item.id) );
+
+    res.status(200).send([item]);
   });
 
   // deletes the associated clipboard
@@ -28,8 +38,17 @@ module.exports = app => {
 
   // Adds an item to the clipboard
   app.post('/v1/clipboard/:boardid/boarditem',(req,res) => {
-    res.status(500).send('not implemented');
-  });
+    if (!req.body.new_item)
+      return res.status(422).send( { error : "could not create new board item"});
 
+    let item = {
+      board_id : req.params.boardid,
+      text_content : req.body.new_item
+    };
+
+    app.Items.makeItem(item);
+
+    res.status(200).send(item);
+  });
 
 };

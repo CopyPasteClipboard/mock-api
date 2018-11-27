@@ -1,9 +1,9 @@
-/* Copyright G. Hemingway @2018 - All rights reserved */
 "use strict";
 
 const crypto = require("crypto");
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+
+let primary_key = 0;
+let users = [];
 
 /***************** User Model *******************/
 /**
@@ -32,13 +32,29 @@ let save = user => {
   user.hash = encryptPassword(user.salt,user.password);
   delete user['password'];
 
-  users.append(user);
+  user.id = primary_key;
+  primary_key++;
+
+  user.created_on = new Date();
+  users.push(user);
 };
 
-let users = [];
+const getUsers = () => {
+  return users;
+};
+
+const getLastUser = () => {
+  return users[users.length - 1];
+};
 
 users.save = save;
+users.getUsers = getUsers;
 users.validateUser = validateUser;
+users.getLastUser = getLastUser;
+users.primary_key = primary_key;
+
+
+users.save( { username : "bananaland", password : "coffeeYummy", phone_number : "1234567890" });
 
 module.exports = {
   Users : users
